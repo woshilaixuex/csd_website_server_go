@@ -1,10 +1,11 @@
-package models
+package engine
 
 import (
 	"fmt"
 	"strings"
 
 	"github.com/csd-world/csd_webstie_server_go/app/config"
+	"github.com/csd-world/csd_webstie_server_go/internal/models"
 	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -54,7 +55,7 @@ func InitDB(cfg *config.Config) *MysqlEngine {
 			panic(fmt.Sprintf("database connect failed: %v", err))
 		}
 	}
-	MustCreateEnrollTableIfNotExists(db, cfg.Database.TableName)
+	models.MustCreateEnrollTableIfNotExists(db, cfg.Database.TableName)
 	logx.Info("database is connected")
 	return &MysqlEngine{
 		db,
@@ -81,12 +82,14 @@ func createDatabase(cfg *config.Config) error {
 	// 连接到 MySQL 服务器
 	tempDb, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		return fmt.Errorf("failed to connect to MySQL server: %w", err)
+		logx.Errorf("failed to connect to MySQL server: %w", err)
+		return err
 	}
 
 	// 创建数据库
 	if err := tempDb.Exec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", cfg.Database.DatabaseName)).Error; err != nil {
-		return fmt.Errorf("failed to create database: %w", err)
+		logx.Errorf("failed to connect to MySQL server: %w", err)
+		return err
 	}
 
 	return nil

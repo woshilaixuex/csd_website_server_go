@@ -17,7 +17,7 @@ var table_name = "enroll_table"
 
 // 人员信息
 type PersonalInfo struct {
-	StudentNumber string `gorm:"column:student_number;unique;not null"`      // 学号，唯一
+	StudentNumber string `gorm:"column:student_number;not null"`             // 学号
 	Name          string `gorm:"column:name;type:varchar(20);not null"`      // 姓名
 	QQNumber      string `gorm:"column:qq_number;type:varchar(20);not null"` // QQ号
 	Email         string `gorm:"column:email;type:varchar(50);not null"`     // 邮箱

@@ -1,6 +1,10 @@
 package services
 
-import "github.com/csd-world/csd_webstie_server_go/internal/models"
+import (
+	"github.com/csd-world/csd_webstie_server_go/internal/models"
+	"github.com/csd-world/csd_webstie_server_go/internal/models/engine"
+	"github.com/csd-world/csd_webstie_server_go/pkg"
+)
 
 /*
  * @Author: deylr1c
@@ -9,11 +13,24 @@ import "github.com/csd-world/csd_webstie_server_go/internal/models"
  * @Date: 2024-09-28 03:26
  */
 type ApiService struct {
-	Engine *models.MysqlEngine
+	Engine   *engine.MysqlEngine
+	ResultCh *pkg.MssChan
 }
 
+func NewApiService(engine *engine.MysqlEngine, resultCh *pkg.MssChan) *ApiService {
+	return &ApiService{
+		Engine:   engine,
+		ResultCh: resultCh,
+	}
+}
 func (s *ApiService) InsertEnroll(enroll *models.EnrollTable) error {
-	return s.Engine.InsertEnrollTable(enroll)
+	err := s.Engine.InsertEnrollTable(enroll)
+	if err == nil {
+		if s.ResultCh.CheckIsOpen() {
+			s.ResultCh.Send(enroll)
+		}
+	}
+	return err
 }
 
 func (s *ApiService) QueryEnrolls() ([]models.EnrollTable, error) {

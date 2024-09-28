@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/gin-gonic/gin v1.10.0
+	github.com/jinzhu/copier v0.4.0
 	github.com/zeromicro/go-zero v1.7.2
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/mysql v1.5.7

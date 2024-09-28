@@ -1,4 +1,4 @@
-package handlers
+package models
 
 /*
  * @Author: deylr1c
@@ -6,7 +6,6 @@ package handlers
  * @Description: http返回和请求模型
  * @Date: 2024-09-28 03:58
  */
-
 // 请求体
 type ApiReqBody struct {
 	StudentNumber string `json:"student_number" binding:"required"`
@@ -20,13 +19,29 @@ type ApiReqBody struct {
 	Experience    string `json:"experience"`
 }
 type ApiRequest struct {
-	Data interface{} `json:"data"`
+	Data *ApiReqBody `json:"data"`
 }
 
 // 返回体
-type ApiRspBody string
+type ApiRespBody struct {
+	Info string `json:"info"`
+}
 type ApiResponse struct {
-	Code int32       `json:"code"`
-	Msg  string      `json:"msg"`
-	Data interface{} `json:"data"`
+	Code int32        `json:"code"`
+	Msg  string       `json:"msg"`
+	Data *ApiRespBody `json:"data"`
+}
+
+// TenantAccessTokenRequest 请求租户访问令牌的结构体
+type TenantAccessTokenRequest struct {
+	AppID     string `json:"app_id"`
+	AppSecret string `json:"app_secret"`
+}
+
+// TenantAccessTokenResponse 响应结构体
+type TenantAccessTokenResponse struct {
+	Code              int    `json:"code"`
+	Msg               string `json:"msg"`
+	TenantAccessToken string `json:"tenant_access_token"`
+	Expire            int    `json:"expire"`
 }

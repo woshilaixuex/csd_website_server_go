@@ -1,4 +1,4 @@
-package models_test
+package engine_test
 
 import (
 	"flag"
@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/csd-world/csd_webstie_server_go/app/config"
-	"github.com/csd-world/csd_webstie_server_go/internal/models"
+	models "github.com/csd-world/csd_webstie_server_go/internal/models/engine"
 )
 
 /*
@@ -16,7 +16,7 @@ import (
  * @Description: 引擎测试
  * @Date: 2024-09-28 02:04
  */
-var configFile = flag.String("f", "../../app/etc/server.yaml", "the config file")
+var configFile = flag.String("f", "../../../app/etc/server.yaml", "the config file")
 
 func TestInitDB(t *testing.T) {
 	flag.Parse()

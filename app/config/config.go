@@ -15,10 +15,8 @@ import (
  */
 type Config struct {
 	Server struct {
-		Host string `yaml:"host"`
-		Port int    `yaml:"port"`
+		Port int64 `yaml:"port"`
 	} `yaml:"server"`
-
 	Database struct {
 		User         string `yaml:"user"`
 		PassWord     string `yaml:"password"`
@@ -27,8 +25,16 @@ type Config struct {
 		DatabaseName string `yaml:"database_name"`
 		TableName    string `yaml:"table_name"`
 	} `yaml:"database"`
+	FeiShuServer struct {
+		Open      bool   `yaml:"open"`
+		AppId     string `yaml:"app_id"`
+		TableId   string `yaml:"table_id"`
+		AppToken  string `yaml:"app_token"`
+		AppSecret string `yaml:"app_secret"`
+	} `yaml:"feishu_server"`
 }
 
+// 解析配置
 func Load(path string) (*Config, error) {
 	var cfg Config
 	data, err := os.ReadFile(path)
@@ -48,7 +54,7 @@ func Load(path string) (*Config, error) {
 	return &cfg, nil
 }
 
-// 强制要求加载成功，否则panic
+// 强制要求配置格式，否则panic
 func MustLoad(path string) *Config {
 	cfg, err := Load(path)
 	if err != nil {
