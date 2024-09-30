@@ -24,13 +24,10 @@ func NewApiService(engine *engine.MysqlEngine, resultCh *pkg.MssChan) *ApiServic
 	}
 }
 func (s *ApiService) InsertEnroll(enroll *models.EnrollTable) error {
-	err := s.Engine.InsertEnrollTable(enroll)
-	if err == nil {
-		if s.ResultCh.CheckIsOpen() {
-			s.ResultCh.Send(enroll)
-		}
+	if s.ResultCh.CheckIsOpen() {
+		s.ResultCh.Send(enroll)
 	}
-	return err
+	return s.Engine.InsertEnrollTable(enroll)
 }
 
 func (s *ApiService) QueryEnrolls() ([]models.EnrollTable, error) {

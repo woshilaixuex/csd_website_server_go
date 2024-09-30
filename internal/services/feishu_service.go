@@ -17,10 +17,10 @@ import (
 /*
  * @Author: deylr1c
  * @Email: linyugang7295@gmail.com
- * @Description: 飞书
+ * @Description: 飞书服务
  * @Date: 2024-09-28 03:33
  */
-
+// 监听管道可以别管，改PushEnroll方法就行
 func FeiShuServiceLisen(cfg *config.Config, resultCh <-chan interface{}) {
 	// 如果这个函数出异常不要影响返回（感觉其实可以删掉）
 	defer func() {
@@ -42,7 +42,6 @@ func FeiShuServiceLisen(cfg *config.Config, resultCh <-chan interface{}) {
 					return
 				}
 			}
-			logx.Debug(data)
 			if enroll, ok := data.(*models.EnrollTable); ok {
 				PushEnroll(cfg, enroll)
 			}
@@ -51,20 +50,24 @@ func FeiShuServiceLisen(cfg *config.Config, resultCh <-chan interface{}) {
 		}
 	}
 }
+
+// 提交飞书文档服务编排
 func PushEnroll(cfg *config.Config, enroll *models.EnrollTable) {
 	if enroll == nil {
 		return
 	}
+	// 获取用户token
 	token, _, err := fetchTenantAccessToken(cfg)
 	if err != nil {
 		return
 	}
 	var hadExperience string
-	if enroll.IsFresh {
+	if enroll.HadExperience {
 		hadExperience = "T"
 	} else {
 		hadExperience = "F"
 	}
+	// push数据到表单
 	err = createRecord(token, cfg, &models.RecordFields{
 		CreatedAt:     int(time.Now().Unix() * 1000),
 		StudentID:     enroll.StudentNumber,

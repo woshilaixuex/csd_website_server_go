@@ -26,10 +26,10 @@ type PersonalInfo struct {
 
 // 学习状况考察
 type Inspection struct {
-	Grade       int8   `gorm:"column:grade;not null;check:grade in (1, 2)"`
-	IsFresh     bool   `gorm:"column:is_fresh;not null"`           // 是否为无开发经验
-	Orientation string `gorm:"column:orientation;type:char(4)"`    // 方向
-	Experience  string `gorm:"column:experience;type:varchar(50)"` // 经验
+	Grade         int8   `gorm:"column:grade;not null;check:grade in (1, 2)"`
+	HadExperience bool   `gorm:"column:had_experience;not null"`     // 是否为无开发经验
+	Orientation   string `gorm:"column:orientation;type:char(4)"`    // 方向
+	Experience    string `gorm:"column:experience;type:varchar(50)"` // 经验
 }
 
 // 提交表单

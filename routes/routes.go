@@ -16,7 +16,7 @@ func RegisterRoutes(r *gin.Engine, h *handlers.Handler) {
 	apiGroup := r.Group("/api")
 	{
 		// POST 请求：提交报名表单
-		apiGroup.POST("/enroll", h.PostEnroll)
+		apiGroup.POST("/enrolls", h.PostEnroll)
 	}
 
 }

@@ -14,7 +14,7 @@ type ApiReqBody struct {
 	Email         string `json:"email" binding:"required"`
 	Reason        string `json:"reason" binding:"required"`
 	Grade         int8   `json:"grade" binding:"required"`
-	IsFresh       bool   `json:"is_fresh" `
+	HadExperience bool   `json:"had_experience" `
 	Orientation   string `json:"orientation"`
 	Experience    string `json:"experience"`
 }
