@@ -35,13 +35,13 @@ func main() {
 	engine := engine.InitDB(cfg)
 	// 协程开启飞书服务监听（启动失败会报错，不会panic）
 	resultCh := pkg.NewMssChan(30)
-	if cfg.FeiShuServer.Open {
+	defer func() {
+		if resultCh.CheckIsOpen() {
+			resultCh.Close()
+		}
+	}()
+	InitFeiShuService := func() {
 		var once sync.Once
-		defer func() {
-			if resultCh.CheckIsOpen() {
-				resultCh.Close()
-			}
-		}()
 		once.Do(func() {
 			resultCh.Open()
 		})
@@ -49,6 +49,9 @@ func main() {
 		go func() {
 			services.FeiShuServiceLisen(cfg, resultCh.C) // 传入只读管道
 		}()
+	}
+	if cfg.FeiShuServer.Open {
+		InitFeiShuService()
 	}
 	// 初始化服务
 	InitSever := func() {
